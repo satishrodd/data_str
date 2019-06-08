@@ -9,16 +9,16 @@
 #include<stdio.h>
 
 #define SIZE 100
+#define INCLUDE_MAIN 1
 
-typedef struct queue_s {
-    void  *arr[SIZE];
-    int front, tail;
-} queue_t;
-
+////////////////////////////////////////////////////
+//              BASIC STACK
+////////////////////////////////////////////////////
 typedef struct stack_s {
     void *arr[SIZE];
     int top;
 }stack_t;
+
 void 
 push(stack_t *s, void *node) {
     if(s->top>SIZE) {
@@ -29,6 +29,7 @@ push(stack_t *s, void *node) {
     s->top++;
     return;
 }
+
 void *
 pop(stack_t *s) {
     if(!s->top){
@@ -38,10 +39,18 @@ pop(stack_t *s) {
     s->top--;
     return s->arr[s->top];
 }
+
 void
 stack_init(stack_t *s) {
     s->top = 0;
 }
+////////////////////////////////////////////////////
+//              BASIC QUEUE
+///////////////////////////////////////////////////
+typedef struct queue_s {
+    void  *arr[SIZE];
+    int front, tail;
+} queue_t;
 
 void
 enqueue(queue_t *q, void * node) {
@@ -66,6 +75,7 @@ queue_init(queue_t *q) {
     q->tail  = 0;
 }
 
+#if INCLUDE_MAIN
 void main() {
     int a[10] = {1,3,2,4,5,6,7,100,200,1000};
     int i;
@@ -93,3 +103,4 @@ void main() {
     return;
 
 }
+#endif /* INCLUDE_MAIN */ 
