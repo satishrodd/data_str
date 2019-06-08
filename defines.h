@@ -13,6 +13,11 @@
 
 #define SIZE 100
 #define INCLUDE_MAIN 0
+#define ENABLE_DEBUG 1
+
+#define TREE_DEBUG(args...)\
+  if(ENABLE_DEBUG)\
+  printf(args);
 
 typedef struct stack_s {
     void *arr[SIZE];
@@ -39,7 +44,6 @@ typedef struct node_s {
 }node;
 
 typedef enum {
-    REGULAR =0,
     BST,
     AVL,
     TYPE_MAX
@@ -68,36 +72,10 @@ typedef struct tree_s {
     tree_funcs      *fp;
 }tree_t;
 
-void  reg_tree_insert    (tree_t *t, node *n);
-void  reg_tree_delete    (tree_t *t, node *n);
-void  reg_tree_print     (tree_t *t);
-node* reg_tree_search    (tree_t *t, node *n);
+void  bst_tree_insert    (tree_t *t, node *n);
+void  bst_tree_delete    (tree_t *t, node *n);
+void  bst_tree_print     (tree_t *t);
+node* bst_tree_search    (tree_t *t, node *n);
 
-void tree_stub          (tree_t *t, node *n) {return;}
-void tree_stub_print    (tree_t *t, node *n) {return;}
-node * tree_stub_search (tree_t *t, node *n){return NULL;}
-
-tree_funcs tree_fps[TYPE_MAX] = 
-{   // REGULAR
-    {
-        .in      = reg_tree_insert,
-        .del     = reg_tree_delete,
-        .print   = reg_tree_print,
-        .search  = reg_tree_search},
-    //BST
-    {
-        .in     = tree_stub,
-        .del    = tree_stub,
-        .print  = tree_stub_print,
-        .search = tree_stub_search,
-    },
-    //AVL
-    {
-        .in     = tree_stub,
-        .del    = tree_stub,
-        .print  = tree_stub_print,
-        .search = tree_stub_search,
-    }
-};
 
 #endif /* DEFINES_H */
