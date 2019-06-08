@@ -7,17 +7,12 @@
  *---------------------------------------------------------------------------
  */
 #include<stdio.h>
+#include"defines.h"
 
-#define SIZE 100
-#define INCLUDE_MAIN 1
 
 ////////////////////////////////////////////////////
 //              BASIC STACK
 ////////////////////////////////////////////////////
-typedef struct stack_s {
-    void *arr[SIZE];
-    int top;
-}stack_t;
 
 void 
 push(stack_t *s, void *node) {
@@ -47,10 +42,6 @@ stack_init(stack_t *s) {
 ////////////////////////////////////////////////////
 //              BASIC QUEUE
 ///////////////////////////////////////////////////
-typedef struct queue_s {
-    void  *arr[SIZE];
-    int front, tail;
-} queue_t;
 
 void
 enqueue(queue_t *q, void * node) {
