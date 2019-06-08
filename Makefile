@@ -1,6 +1,6 @@
 BIN=bin
 bin:
-	gcc trees.c queue.c -o bin
+	gcc -g trees.c queue.c -o bin
 clean:
 	rm -rf bin
 

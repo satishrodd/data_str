@@ -13,7 +13,7 @@
 
 #define SIZE 100
 #define INCLUDE_MAIN 0
-#define ENABLE_DEBUG 1
+#define ENABLE_DEBUG 0
 
 #define TREE_DEBUG(args...)\
   if(ENABLE_DEBUG)\
@@ -37,10 +37,16 @@ void enqueue(queue_t *q, void * node);
 void *dequeue(queue_t *q);
 void queue_init(queue_t *q);
 
+// Forward decl.
+
+typedef struct node_s node; 
+typedef void (*node_prt)(node *n);
+
 typedef struct node_s {
-    struct node_s   *next;
-    struct node_s   *prev;
+    struct node_s   *right;
+    struct node_s   *left;
     int             data;
+    node_prt        nprint;
 }node;
 
 typedef enum {

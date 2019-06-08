@@ -42,6 +42,7 @@ tree_funcs tree_fps[TYPE_MAX] =
 void
 tree_init (tree_t *t, tree_types_t type, 
            tree_compare compare) {
+    t->root = NULL;
     t->type = type;
     t->fp = &tree_fps[type]; 
     t->compare = compare;
@@ -68,7 +69,30 @@ tsearch(tree_t *t, node *n) {
 /////////////////////////////////////////////////////////////////////////////
 void 
 bst_tree_insert(tree_t *t, node *n) {
+
+    node *tmp = NULL;
+    node *prev = NULL;
+
     TREE_DEBUG("[%s]Inserting the node\n", __FUNCTION__);
+    if (!t->root) {
+        TREE_DEBUG("First node "); 
+        t->root = n;
+        return;
+    }
+    tmp = t->root;
+    while(tmp) {
+        prev = tmp;
+        if(t->compare(tmp, n)) {
+            tmp = tmp->right;
+        } else {
+            tmp = tmp->left;
+        }
+    }
+    if(t->compare(prev, n)) 
+        prev->right = n;
+    else
+        prev->left = n;
+
 }
 
 void 
@@ -86,20 +110,34 @@ bst_tree_search(tree_t *t, node *n) {
     TREE_DEBUG("[%s]searching the node\n", __FUNCTION__);
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+//          Program spcific code from here.
+/////////////////////////////////////////////////////////////////////////////
 int
 node_compare(node *n1, node *n2) {
-    if(n1->data < n2->data) return -1;
+    if(n1->data <= n2->data) return 0;
     if(n1->data > n2->data) return 1;
-    return 0;
+}
+
+void
+node_print(node *n) {
+    printf("%d\n", n->data);
 }
 
 void main() {
     tree_t t;
-    node n;
+    node n[10];
+    int i;
     tree_init(&t, BST, node_compare);
-    tinsert(&t, &n);
-    tdelete(&t, &n);
-    tsearch(&t, &n);
+    for ( i=0 ;i<10 ;i++ ) {
+        n[i].data = i;
+        n[i].nprint = node_print;
+        n[i].left = n[i].right = NULL;
+        tinsert(&t, &n[i]);
+    }
+    tdelete(&t, &n[0]);
+    tsearch(&t, &n[0]);
     tprint(&t);
 }
 
