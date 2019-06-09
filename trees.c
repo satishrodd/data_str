@@ -70,13 +70,13 @@ tsearch(tree_t *t, node *n) {
 }
 
 node *
-tmax(tree_t *t, node *root) {
-    return t->fp->max(root);
+tmax(tree_t *t) {
+    return t->fp->max(t->root);
 }
 
 node *
-tmin(tree_t *t, node *root) {
-    return t->fp->min(root);
+tmin(tree_t *t) {
+    return t->fp->min(t->root);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -139,6 +139,7 @@ bst_tree_delete(tree_t *t, node *n) {
             if ( !root->right ) {
                 root=root->left;
             }
+            temp->left = temp->right = NULL;
         }
     }
     return(root);
@@ -153,15 +154,28 @@ bst_tree_print(tree_t *t) {
     }
     t1.root = t->root->left;
     bst_tree_print(&t1);
+    t->root->nprint(t->root);
     t1.root = t->root->right;
     bst_tree_print(&t1);
-    t->root->nprint(t->root);
     return;
 }
 
 node*
 bst_tree_search(tree_t *t, node *n) {
     TREE_DEBUG("[%s]searching the node\n", __FUNCTION__);
+    tree_t t1=*t;
+    if ( !t->root ) {
+        return NULL;
+    }
+    if ( t->compare(t->root, n)>0 ) {
+        t1.root = t->root->right;
+        return(bst_tree_search(&t1,n));
+    } else if ( t->compare(t->root, n)<0 ){
+        t1.root = t->root->left;
+        return(bst_tree_search(&t1,n));
+    } else {
+        return t->root;
+    }
 }
 
 node*
@@ -203,11 +217,13 @@ node_print(node *n) {
 
 void main() {
     tree_t t;
+    node nn;
     node n[10];
-    int data[10] = {13,3,41,2,72,33,445,5,100,32};
+    int data[11] = {13,3,41,2,72,33,445,5,100,32};
     int i;
+    node *tmp;
     tree_init(&t, BST, node_compare);
-    for ( i=0 ;i<10 ;i++ ) {
+    for ( i=0 ;i<11 ;i++ ) {
         n[i].data = data[i];
         n[i].nprint = node_print;
         n[i].left = n[i].right = NULL;
@@ -216,7 +232,16 @@ void main() {
     tprint(&t);
     printf("delete");
     tdelete(&t, &n[2]);
- //   tsearch(&t, &n[0]);
     tprint(&t);
+    nn.data = 31;
+    nn.nprint = node_print;
+    nn.left = nn.right = NULL;
+    tmp =  tsearch(&t, &nn);
+    if (!tmp ) {
+        printf("search not found\n");
+    } else {
+        printf("FOUND:");
+        tmp->nprint(tmp);
+    }
 }
 
