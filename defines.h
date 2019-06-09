@@ -13,7 +13,7 @@
 
 #define SIZE 100
 #define INCLUDE_MAIN 0
-#define ENABLE_DEBUG 1
+#define ENABLE_DEBUG 0
 
 #define TREE_DEBUG(args...)\
   if(ENABLE_DEBUG)\

@@ -97,13 +97,13 @@ bst_tree_insert(tree_t *t, node *n) {
     tmp = t->root;
     while(tmp) {
         prev = tmp;
-        if(t->compare(tmp, n)) {
+        if(t->compare(tmp, n)>0) {
             tmp = tmp->right;
         } else {
             tmp = tmp->left;
         }
     }
-    if(t->compare(prev, n)) 
+    if(t->compare(prev, n)>0) 
         prev->right = n;
     else
         prev->left = n;
@@ -120,7 +120,6 @@ bst_tree_delete(tree_t *t, node *n) {
         TREE_DEBUG("[%s] No data to delete", __FUNCTION__);
         return root;
     }
-    root->nprint(root);
     if ( t->compare(root,n)<0) {
         t1.root = root->left;
         root->left=bst_tree_delete(&t1, n);
@@ -148,6 +147,16 @@ bst_tree_delete(tree_t *t, node *n) {
 void 
 bst_tree_print(tree_t *t) {
     TREE_DEBUG("[%s]printing tree\n", __FUNCTION__);
+    tree_t t1;
+    if ( !t->root ) {
+        return;
+    }
+    t1.root = t->root->left;
+    bst_tree_print(&t1);
+    t1.root = t->root->right;
+    bst_tree_print(&t1);
+    t->root->nprint(t->root);
+    return;
 }
 
 node*
@@ -204,8 +213,10 @@ void main() {
         n[i].left = n[i].right = NULL;
         tinsert(&t, &n[i]);
     }
+    tprint(&t);
+    printf("delete");
     tdelete(&t, &n[2]);
  //   tsearch(&t, &n[0]);
-  //  tprint(&t);
+    tprint(&t);
 }
 
