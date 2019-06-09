@@ -13,7 +13,7 @@
 
 #define SIZE 100
 #define INCLUDE_MAIN 0
-#define ENABLE_DEBUG 0
+#define ENABLE_DEBUG 1
 
 #define TREE_DEBUG(args...)\
   if(ENABLE_DEBUG)\
@@ -58,17 +58,22 @@ typedef enum {
 // Forward decl.
 typedef struct tree_s tree_t;
 
-typedef void    (*tree_insert)  (tree_t *t, node *n);
-typedef void    (*tree_delete)  (tree_t *t, node *n);
+typedef node*   (*tree_insert)  (tree_t *t, node *n);
+typedef node*   (*tree_delete)  (tree_t *t, node *n);
 typedef void    (*tree_print)   (tree_t *t);
 typedef node*   (*tree_search)  (tree_t *t, node *n);
 typedef int     (*tree_compare) (node *n1, node *n2);
+typedef node*   (*find_max)     (node *root);
+typedef node*   (*find_min)     (node *root);
+
 
 typedef struct tree_func_p {
     tree_insert in;
     tree_delete del;
     tree_print  print;
     tree_search search;
+    find_max    max;
+    find_min    min;
 } tree_funcs;
 
 typedef struct tree_s {
@@ -78,10 +83,12 @@ typedef struct tree_s {
     tree_funcs      *fp;
 }tree_t;
 
-void  bst_tree_insert    (tree_t *t, node *n);
-void  bst_tree_delete    (tree_t *t, node *n);
+node* bst_tree_insert    (tree_t *t, node *n);
+node* bst_tree_delete    (tree_t *t, node *n);
 void  bst_tree_print     (tree_t *t);
 node* bst_tree_search    (tree_t *t, node *n);
+node* bst_tree_max       (node *n);
+node* bst_tree_min       (node *n);
 
 
 #endif /* DEFINES_H */
